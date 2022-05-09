@@ -17,7 +17,7 @@ namespace Calendario.Sage.Calendario
          
                 List<CalendarioModels> listaCalendario = new List<CalendarioModels>();
                 using ( var connection = new SqlConnection(Properties.Resources.sqlconnection)) {
-                    sql = $"SELECT format(cb.FechaEntrega,'dd/MM/yyyy') as FechaEntrega,  cb.CodigoCliente, cb.NumeroPedido,cb.Nombre,cb.Estado," +
+                    sql = $"SELECT format(cb.FechaEntrega,'dd/MM/yyyy') as FechaEntrega,  cb.CodigoCliente, cb.NumeroPedido as Numero,cb.Nombre,cb.Estado,cb.EjercicioPedido as Ejercicio,cb.SeriePedido as Serie," +
                         $" cb.CodigoTransportistaEnvios,isnull(t.Transportista, 'Sin Transportista') as transportista" +
                         $" FROM CabeceraPedidoCliente as cb " +
                         $"left join Transportistas as t on cb.codigoempresa = t.CodigoEmpresa and  cb.CodigoTransportistaEnvios = t.CodigoTransportista " +
@@ -44,16 +44,16 @@ namespace Calendario.Sage.Calendario
                 
             }
         }
-        public int Modifica(CalendarioModels calendario) {
+        public int Modifica(RequestModificaPedidoModels rmp) {
             try {
                 String update = "";
 
                 using (var connection = new SqlConnection(Properties.Resources.sqlconnection)) {
               
                     update = $"UPDATE CabeceraPedidoCliente SET CodigoTransportistaEnvios=@CodigoTransportistaEnvios WHERE EjercicioPedido=@Ejercicio and " +
-                        $"NumeroPedido=@NumeroPedido and SeriePedido=@SeriePedido and CodigoEmpresa={Properties.Resources.CodigoEmpresa}";
+                        $"NumeroPedido=@Numero and SeriePedido=@Serie and CodigoEmpresa={Properties.Resources.CodigoEmpresa}";
 
-                    var resultado = connection.Execute(update, calendario);
+                    var resultado = connection.Execute(update, rmp.calendario);
                     return resultado;
 
                 }

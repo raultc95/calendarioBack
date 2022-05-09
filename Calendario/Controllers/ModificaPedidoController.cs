@@ -9,7 +9,7 @@ namespace Calendario.Controllers {
     [Route("api/modifica")]
     public class ModificaPedidoController : Controller {
 
-        public Int32 Post(CalendarioModels pedido) {
+        public Int32 Post(RequestModificaPedidoModels pedido) {
             try {
                 
                 Sage.Calendario.Calendario _calendario = new Sage.Calendario.Calendario();
